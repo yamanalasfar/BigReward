@@ -1,4 +1,4 @@
-import React ,{useState} from 'react';
+import React ,{useState , useEffect} from 'react';
 import { Text, ImageBackground} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LoginStyles from '../Styles/LoginStyles';
@@ -7,11 +7,33 @@ import colors from '../Const/Colors';
 import images from '../Const/Images';
 import CustomButton from '../Component/CustomButton';
 import TouchableText from '../Component/TouchableText';
+import Endpoints from '../Const/Api\'s_Endpoints';
+import uuid from 'react-native-uuid';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCountryCode } from '../Redux/Slices/CountryCodeSlice';
+import login from '../Api\'s/Login';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const did = uuid.v4();
+    const [loading, setLoading] = useState(false);
+
+    const dispatch = useDispatch();
+    const { countryCode, status, error } = useSelector((state) => state.country);
+    
+    useEffect(() => {
+        if (status === 'idle') {
+          dispatch(fetchCountryCode());
+        }
+    }, [dispatch, status]);
+
+    const handleSignin = async () => {
+        login(email, password, countryCode, did, navigation, setLoading);
+      };
+
     return (
         <ImageBackground
             source={images.LoginBackGround}
@@ -39,7 +61,8 @@ const LoginScreen = ({ navigation }) => {
                     color={colors.Red}
                     text='Sign in'
                     underlayColor={colors.RedUnderlay}
-                    onPress={()=>console.log('Login button pressed')}
+                    onPress={handleSignin}
+                    disabled={loading}
                 />
                 <CustomButton
                     TextColor={colors.White}
@@ -47,7 +70,7 @@ const LoginScreen = ({ navigation }) => {
                     text='Sign in with Google'
                     underlayColor={colors.CeruleanUnderlay}
                     icon='google'
-                    onPress={()=>console.log('Google button pressed')}
+                    onPress={async ()=>console.log(await AsyncStorage.getItem('token'))}
                 />
                 <TouchableText
                     color={colors.Red}

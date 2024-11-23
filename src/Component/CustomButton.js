@@ -1,18 +1,25 @@
 import React from 'react';
-import { TouchableHighlight, Text, StyleSheet, View } from 'react-native';
+import { TouchableHighlight, Text, StyleSheet, View, ActivityIndicator } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const CustomButton = ({ text, color, underlayColor, onPress, TextColor, icon }) => {
+const CustomButton = ({ text, color, underlayColor, onPress, TextColor, icon, disabled }) => {
   return (
     <View style={styles.container}>
       <TouchableHighlight
-        style={[styles.button, { backgroundColor: color }]}
+        style={[styles.button, { backgroundColor: color, opacity: disabled ? 0.7 : 1 }]}
         underlayColor={underlayColor}
         onPress={onPress}
+        disabled={disabled}
       >
         <View style={styles.content}>
-          {icon && <FontAwesome name={icon} size={24} color={TextColor} style={styles.icon} />}
-          <Text style={[styles.buttonText, { color: TextColor }]}>{text}</Text>
+          {disabled ? (
+            <ActivityIndicator size="small" color={TextColor || '#fff'} />
+          ) : (
+            <>
+              {icon && <FontAwesome name={icon} size={24} color={TextColor} style={styles.icon} />}
+              <Text style={[styles.buttonText, { color: TextColor }]}>{text}</Text>
+            </>
+          )}
         </View>
       </TouchableHighlight>
     </View>
@@ -33,8 +40,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   icon: {
     marginRight: 8,

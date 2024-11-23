@@ -7,9 +7,15 @@ import CustomTextInput from '../Component/CustomTextInput';
 import colors from '../Const/Colors';
 import images from '../Const/Images';
 import CustomButton from '../Component/CustomButton';
+import resetPassword from '../Api\'s/RestorePassword';
 
 const RestorPasswordScreen = ({ navigation }) => {
     const [email, setEmail] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleResetPassword = async () => {
+        resetPassword(email , setLoading);
+      };
     return (
         <ImageBackground
             source={images.LoginBackGround}
@@ -34,12 +40,12 @@ const RestorPasswordScreen = ({ navigation }) => {
                     color={colors.Red}
                     text="Send Recovery Email"
                     underlayColor={colors.RedUnderlay}
-                    onPress={() => console.log('Send Recovery Email button pressed')}
+                    onPress={handleResetPassword}
+                    disabled={loading}
                 />
             </SafeAreaView>
         </ImageBackground>
     );
 };
-
 
 export default RestorPasswordScreen;
