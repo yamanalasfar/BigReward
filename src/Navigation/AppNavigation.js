@@ -4,6 +4,9 @@ import HomeScreen from '../Screens/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignupScreen from '../Screens/Signup';
 import RestorPasswordScreen from '../Screens/RestorePassword';
+import ActivityScreen from '../Screens/Activity';
+import RewardScreen from '../Screens/Reward';
+import BottomTabBar from '../Component/BottomNavigationBar';
 
 const Stack = createStackNavigator();
 
@@ -13,7 +16,9 @@ const AppNavigator = () => {
       <Stack.Screen name='Login' component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name='Signup' component={SignupScreen} options={{ headerShown: false }} />
       <Stack.Screen name='Recovery' component={RestorPasswordScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name='Home' component={BottomTabBar} options={{ headerShown: false }} />
+      <Stack.Screen name='Activity' component={ActivityScreen} options={{ headerShown: false }} />
+      <Stack.Screen name='Reward' component={RewardScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

@@ -7,12 +7,11 @@ import colors from '../Const/Colors';
 import images from '../Const/Images';
 import CustomButton from '../Component/CustomButton';
 import TouchableText from '../Component/TouchableText';
-import Endpoints from '../Const/Api\'s_Endpoints';
 import uuid from 'react-native-uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCountryCode } from '../Redux/Slices/CountryCodeSlice';
 import login from '../Api\'s/Login';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState("");
@@ -32,7 +31,8 @@ const LoginScreen = ({ navigation }) => {
 
     const handleSignin = async () => {
         login(email, password, countryCode, did, navigation, setLoading);
-      };
+        console.log(countryCode);
+    };
 
     return (
         <ImageBackground
@@ -70,7 +70,7 @@ const LoginScreen = ({ navigation }) => {
                     text='Sign in with Google'
                     underlayColor={colors.CeruleanUnderlay}
                     icon='google'
-                    onPress={async ()=>console.log(await AsyncStorage.getItem('token'))}
+                    onPress={()=>navigation.navigate('Home')}
                 />
                 <TouchableText
                     color={colors.Red}

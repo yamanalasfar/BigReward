@@ -1,19 +1,19 @@
 import React from 'react';
 import { Text, View, ImageBackground } from 'react-native';
-import HomeStyles from '../Styles/HomeStyles';
 import images from '../Const/Images';
+import ActivityStyles from '../Styles/ActivityStyles';
 
-const HomeScreen = ({ navigation }) => {
+const ActivityScreen = ({ navigation }) => {
     return (
         <ImageBackground
         source={images.LoginBackGround}
-        style={HomeStyles.BackGroundImage}
+        style={ActivityStyles.BackGroundImage}
         resizeMode='cover'
         >
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>Home Screen</Text>
+                <Text>ActivityScreen</Text>
             </View>
         </ImageBackground>
     );
 };
-export default HomeScreen;
+export default ActivityScreen;
