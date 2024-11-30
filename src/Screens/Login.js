@@ -11,6 +11,7 @@ import uuid from 'react-native-uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCountryCode } from '../Redux/Slices/CountryCodeSlice';
 import login from '../Api\'s/Login';
+import GetOffers from '../Api\'s/Home';
 
 
 const LoginScreen = ({ navigation }) => {
@@ -30,8 +31,9 @@ const LoginScreen = ({ navigation }) => {
     }, [dispatch, status]);
 
     const handleSignin = async () => {
-        login(email, password, countryCode, did, navigation, setLoading);
-        console.log(countryCode);
+        // login(email, password, countryCode, did, navigation, setLoading);
+        // console.log(countryCode);
+        await GetOffers(countryCode);
     };
 
     return (

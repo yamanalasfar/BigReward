@@ -2,7 +2,7 @@ import colors from '../Const/Colors';
 
 const BottomNavigationBarStyles = {
     tabBarActiveTintColor: colors.White, // Active icon color
-    tabBarInactiveTintColor: colors.DarkblueUnderlayrkblue, // Inactive icon color
+    tabBarInactiveTintColor: colors.DarkblueUnderlay , // Inactive icon color
     tabBarStyle: {
       position: 'absolute', // Positions the bar absolutely
       bottom: 20, // Space from the bottom

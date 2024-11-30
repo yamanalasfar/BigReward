@@ -2,42 +2,50 @@ import { StyleSheet } from "react-native";
 import  colors  from "../Const/Colors";
 
 const HomeStyles = StyleSheet.create({
-    BackGroundImage: {
-        flex: 1,
-        width: '100%', 
-        height: '100%',
-    },
-    BackGround: {
+    centered: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    AppName: {
-        fontSize: 36,
-        fontFamily: "Roboto",
-        fontWeight:"bold",
-        textAlign: 'center',
-        color: colors.Darkblue,
-        marginBottom : 20
+    scrollContent: {
+        flexGrow: 1, // Allow ScrollView to take up full height
+        padding: 16,
     },
-    Login: {
-        fontSize: 28,
-        fontFamily: "Roboto",
-        textAlign: 'center',
-        color: colors.Darkblue,
-        marginBottom : 32
+    pageContainer: {
+        flex: 1,
     },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        position: 'absolute',
-        top: 0, 
-        left: 0,
+    categoryContainer: {
+        marginBottom: 24, // Space between categories
+    },
+    categoryTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+    offerItem: {
+        marginVertical: 8,
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        elevation: 4,
+        overflow: 'hidden', // Ensure the image respects borderRadius
+    },
+    offerImage: {
         width: '100%',
-        paddingTop: 40,
-        paddingLeft:20,
-        zIndex: 10,
+        aspectRatio: 16 / 9, // Maintain a 16:9 aspect ratio
+        resizeMode: 'cover', // Cover the entire container
+    },
+    textContainer: {
+        padding: 16,
+    },
+    offerTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+    offerDescription: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 16, // Space between description and button
     },
 });
 export default HomeStyles;
