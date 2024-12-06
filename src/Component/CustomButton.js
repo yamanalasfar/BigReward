@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableHighlight, Text, StyleSheet, View, ActivityIndicator } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const CustomButton = ({ text, color, underlayColor, onPress, TextColor, icon, disabled }) => {
+const CustomButton = ({ text, color, underlayColor, onPress, TextColor, icon, disabled ,iconSize}) => {
   return (
     <View style={styles.container}>
       <TouchableHighlight
@@ -16,7 +16,7 @@ const CustomButton = ({ text, color, underlayColor, onPress, TextColor, icon, di
             <ActivityIndicator size="small" color={TextColor || '#fff'} />
           ) : (
             <>
-              {icon && <FontAwesome name={icon} size={24} color={TextColor} style={styles.icon} />}
+              {icon && <FontAwesome name={icon} size={iconSize} color={TextColor} style={styles.icon} />}
               <Text style={[styles.buttonText, { color: TextColor }]}>{text}</Text>
             </>
           )}

@@ -1,30 +1,25 @@
 import React, { useEffect } from 'react';
-import { Text, View, ImageBackground, FlatList, ActivityIndicator, StyleSheet, Image, ScrollView } from 'react-native';
+import { Text, View, ImageBackground, FlatList, ActivityIndicator, StyleSheet, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchOffers } from '../Redux/Slices/OffersSlice';
 import HomeStyles from '../Styles/HomeStyles';
 import images from '../Const/Images';
 import CustomButton from '../Component/CustomButton';
+import colors from '../Const/Colors';
 
 const OfferItem = ({ offer }) => (
-    <View style={HomeStyles.offerItem}>
-        {/* Image Section */}
-        <Image source={{ uri: offer.network_image }} style={HomeStyles.offerImage} />
-        
-        {/* Text Section */}
-        <View style={HomeStyles.textContainer}>
-            <Text style={HomeStyles.offerTitle}>{offer.title || offer.name}</Text>
-            <Text style={HomeStyles.offerDescription}>{offer.description}</Text>
-        </View>
-        
-        {/* Button Section */}
+    <View style={HomeStyles.gridItem}>
+        <Image source={{ uri: offer.network_image }} style={HomeStyles.gridOfferImage} />
+        <Text style={HomeStyles.gridOfferTitle}>{offer.title || offer.name}</Text>
+        <Text style={HomeStyles.gridOfferDescription}>{offer.description}</Text>
         <CustomButton
-            text="Learn More"
-            color="#007bff"
+            text="Play"
+            color={colors.Red}
             underlayColor="#0056b3"
             onPress={() => console.log(`Offer clicked: ${offer.title || offer.name}`)}
-            TextColor="#fff"
-            icon="info-circle"
+            TextColor={colors.White}
+            icon="play"
+            iconSize={18}
         />
     </View>
 );
@@ -56,14 +51,22 @@ const HomeScreen = ({ navigation }) => {
         );
     }
 
-    const renderOffers = (category, data) => (
+    const categories = [
+        { title: 'SDK Offers', data: sdkOffers },
+        { title: 'Web Offers', data: webOffers },
+        { title: 'CPA Offers', data: cpaOffers },
+        { title: 'CPV Offers', data: cpvOffers },
+    ];
+
+    const renderCategory = ({ item }) => (
         <View style={HomeStyles.categoryContainer}>
-            <Text style={HomeStyles.categoryTitle}>{category}</Text>
+            <Text style={HomeStyles.categoryTitle}>{item.title}</Text>
             <FlatList
-                data={data}
-                keyExtractor={(item, index) => `${category}-${index}`}
+                data={item.data}
+                keyExtractor={(offer, index) => `${item.title}-${index}`}
                 renderItem={({ item }) => <OfferItem offer={item} />}
-                scrollEnabled={false} // Prevent FlatList from being scrollable inside ScrollView
+                numColumns={2}
+                columnWrapperStyle={HomeStyles.columnWrapper}
             />
         </View>
     );
@@ -71,17 +74,15 @@ const HomeScreen = ({ navigation }) => {
     return (
         <ImageBackground
             source={images.LoginBackGround}
-            style={HomeStyles.BackGroundImage}
+            style={HomeStyles.backgroundImage}
             resizeMode="cover"
         >
-            <ScrollView contentContainerStyle={HomeStyles.scrollContent}>
-                <View style={HomeStyles.pageContainer}>
-                    {sdkOffers.length > 0 && renderOffers('SDK Offers', sdkOffers)}
-                    {webOffers.length > 0 && renderOffers('Web Offers', webOffers)}
-                    {cpaOffers.length > 0 && renderOffers('CPA Offers', cpaOffers)}
-                    {cpvOffers.length > 0 && renderOffers('CPV Offers', cpvOffers)}
-                </View>
-            </ScrollView>
+            <FlatList
+                data={categories.filter((category) => category.data.length > 0)}
+                renderItem={renderCategory}
+                keyExtractor={(item, index) => `category-${index}`}
+                contentContainerStyle={HomeStyles.scrollContent}
+            />
         </ImageBackground>
     );
 };

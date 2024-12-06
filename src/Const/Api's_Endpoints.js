@@ -5,6 +5,8 @@ const Endpoints = {
     Register: Server + '/register',
     Login: Server + '/login',
     ResetPassword: 'https://spectro-coins.site/forget',
-    HomePage : Server + '/connect',
+    HomePage: Server + '/connect',
+    ActivityPage: Server + '/gift/get',
+    RewardPage : Server + '/gift/get',
 }
 export default Endpoints;
