@@ -6,6 +6,7 @@ import HomeStyles from '../Styles/HomeStyles';
 import images from '../Const/Images';
 import CustomButton from '../Component/CustomButton';
 import colors from '../Const/Colors';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const OfferItem = ({ offer }) => (
     <View style={HomeStyles.gridItem}>
@@ -15,7 +16,7 @@ const OfferItem = ({ offer }) => (
         <CustomButton
             text="Play"
             color={colors.Red}
-            underlayColor="#0056b3"
+            underlayColor={colors.RedUnderlay}
             onPress={() => console.log(`Offer clicked: ${offer.title || offer.name}`)}
             TextColor={colors.White}
             icon="play"
@@ -23,7 +24,6 @@ const OfferItem = ({ offer }) => (
         />
     </View>
 );
-
 const HomeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const { sdkOffers, webOffers, cpaOffers, cpvOffers, status, error } = useSelector((state) => state.offers);
@@ -72,10 +72,8 @@ const HomeScreen = ({ navigation }) => {
     );
 
     return (
-        <ImageBackground
-            source={images.LoginBackGround}
-            style={HomeStyles.backgroundImage}
-            resizeMode="cover"
+        <View
+            style={HomeStyles.background}
         >
             <FlatList
                 data={categories.filter((category) => category.data.length > 0)}
@@ -83,7 +81,7 @@ const HomeScreen = ({ navigation }) => {
                 keyExtractor={(item, index) => `category-${index}`}
                 contentContainerStyle={HomeStyles.scrollContent}
             />
-        </ImageBackground>
+        </View>
     );
 };
 export default HomeScreen;

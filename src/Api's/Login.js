@@ -20,6 +20,7 @@ export const login = async (email, password, cc, did, navigation, setLoading) =>
     const parsedResponse = JSON.parse(response.data.data);
     console.log(parsedResponse.message);
     console.log(parsedResponse.status);
+    console.log(did)
     if (parsedResponse.status == 1) {
       await AsyncStorage.setItem('token', parsedResponse.message);
       console.log(await AsyncStorage.getItem('token'));

@@ -6,6 +6,7 @@ const RewardStyles = StyleSheet.create({
         flex: 1,
         width: '100%', 
         height: '100%',
+        backgroundColor : colors.White
     },
     BackGround: {
         flex: 1,

@@ -4,6 +4,7 @@ import images from '../Const/Images';
 import ActivityStyles from '../Styles/ActivityStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchActivity } from '../Redux/Slices/ActivitySlice';
+import AppBar from '../Component/AppBar';
 
 const ActivityScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const ActivityScreen = ({ navigation }) => {
             style={ActivityStyles.BackGroundImage}
             resizeMode="cover"
         >
+            <AppBar/>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text>ActivityScreen</Text>
             </View>

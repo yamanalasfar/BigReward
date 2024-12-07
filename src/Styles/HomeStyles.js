@@ -83,8 +83,9 @@ const HomeStyles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 8,
     },
-    backgroundImage: {
-        flex : 1
+    background: {
+        flex: 1,
+        backgroundColor : colors.White
     }
 });
 export default HomeStyles;

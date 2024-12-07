@@ -5,6 +5,8 @@ import HomeScreen from '../Screens/Home';
 import ActivityScreen from '../Screens/Activity';
 import RewardScreen from '../Screens/Reward';
 import BottomNavigationBarStyles from '../Styles/BottomNavigationBarStyles';
+import AppBar from './AppBar';
+import ProfileScreen from '../Screens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,7 +14,8 @@ const BottomTabBar = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        headerShown: false, // Hides the header
+        headerShown: true, // Hides the header
+        header:()=><AppBar/>,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -23,6 +26,9 @@ const BottomTabBar = () => {
           } else if (route.name === 'Reward') {
             iconName = 'gift';
           }
+          else if (route.name === 'Profile') {
+            iconName = 'user';
+          }
 
           return <FontAwesome name={iconName} size={size} color={color} />;
               },
@@ -32,6 +38,7 @@ const BottomTabBar = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Activity" component={ActivityScreen} />
       <Tab.Screen name="Reward" component={RewardScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen}/>
     </Tab.Navigator>
   );
 };
