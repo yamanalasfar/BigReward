@@ -19,10 +19,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yamanalasfar.BigRewards"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7524dd5b-8875-49fa-811f-34569e75aa1f"
+      }
+    },
+    "scheme":"BigRewards"
   }
 }

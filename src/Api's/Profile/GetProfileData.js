@@ -1,12 +1,12 @@
 import axios from "axios";
-import Endpoints from "../Const/Api's_Endpoints";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Endpoints from "../../Const/Api's_Endpoints";
 
-const GetReward = async () => {
+const GetProfile = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
         const response = await axios.post(
-            Endpoints.RewardPage,
+            Endpoints.ProfileDetails,
             {},
             {
                 headers: {
@@ -14,11 +14,11 @@ const GetReward = async () => {
                 },
             }
         );
-        console.log("API Response:", response); // Log only the data part of the response
-        return response.data; // Return the actual data
+        console.log("API Response:", response); // Log only the 'hist' part
+        return response.data; // Return only the 'hist' data
     } catch (error) {
         console.error("API Error:", error.response?.data || error.message); // Log error details
-        throw error; // Throw the error so it can be caught by createAsyncThunk
+        throw error; // Rethrow for handling in the slice
     }
 };
-export default GetReward;
+export default GetProfile;

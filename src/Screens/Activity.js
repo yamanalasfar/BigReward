@@ -1,36 +1,24 @@
 import React, { useEffect } from 'react';
-import { Text, View, ImageBackground, ActivityIndicator } from 'react-native';
+import { Text, View, FlatList, Image, StyleSheet, ImageBackground } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import images from '../Const/Images';
 import ActivityStyles from '../Styles/ActivityStyles';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchActivity } from '../Redux/Slices/ActivitySlice';
-import AppBar from '../Component/AppBar';
+import { fetchHist } from '../Redux/Slices/ActivitySlice';
 
-const ActivityScreen = ({ navigation }) => {
+const ActivityScreen = () => {
     const dispatch = useDispatch();
-    const { activity, status, error } = useSelector((state) => state.activity);
+    const { hist, status, error } = useSelector((state) => state.history);
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchActivity());
-        }
-    }, [dispatch, status]);
+        dispatch(fetchHist());
+    }, [dispatch]);
 
     if (status === 'loading') {
-        return (
-            <View style={ActivityStyles.centered}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-        );
+        return <Text>Loading...</Text>;
     }
 
     if (status === 'failed') {
-        return (
-            <View style={ActivityStyles.centered}>
-                <Text>Error loading activity:</Text>
-                <Text>{typeof error === 'object' ? JSON.stringify(error) : error}</Text>
-            </View>
-        );
+        return <Text>Error: {error}</Text>;
     }
 
     return (
@@ -39,12 +27,134 @@ const ActivityScreen = ({ navigation }) => {
             style={ActivityStyles.BackGroundImage}
             resizeMode="cover"
         >
-            <AppBar/>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>ActivityScreen</Text>
-            </View>
+            <FlatList
+                data={hist}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={ActivityStyles.listContainer}
+                renderItem={({ item }) => (
+                    <View style={ActivityStyles.listTile}>
+                        <Image source={{ uri: item.image }} style={ActivityStyles.image} />
+                        <View style={ActivityStyles.textContainer}>
+                            <Text style={ActivityStyles.title}>{item.g_name}</Text>
+                            <Text style={ActivityStyles.subtitle}>{item.message}</Text>
+                        </View>
+                    </View>
+                )}
+            />
         </ImageBackground>
     );
 };
-
 export default ActivityScreen;
+
+// import React, { useEffect, useState } from 'react';
+// import { Text, View, FlatList, Image, StyleSheet, ImageBackground } from 'react-native';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { fetchHist } from '../Redux/Slices/ActivitySlice';
+// import images from '../Const/Images';
+// import RewardStyles from '../Styles/RewardStyles';
+
+// const ActivityScreen = () => {
+//     const dispatch = useDispatch();
+//     const { hist: apiHist, status, error } = useSelector((state) => state.history);
+
+//     // Mock data for testing
+//     const mockHist = [
+//         {
+//             g_name: "Gift 1",
+//             message: "This is a demo message for Gift 1.",
+//             image: "https://via.placeholder.com/150",
+//             is_completed: true,
+//         },
+//         {
+//             g_name: "Gift 2",
+//             message: "This is a demo message for Gift 2.",
+//             image: "https://via.placeholder.com/150",
+//             is_completed: false,
+//         },
+//         {
+//             g_name: "Gift 3",
+//             message: "This is a demo message for Gift 3.",
+//             image: "https://via.placeholder.com/150",
+//             is_completed: true,
+//         },
+//     ];
+
+//     const [hist, setHist] = useState(mockHist); // Use mock data initially
+
+//     useEffect(() => {
+//         // Fetch real API data
+//         dispatch(fetchHist());
+//     }, [dispatch]);
+
+//     useEffect(() => {
+//         if (status === "succeeded" && apiHist.length > 0) {
+//             setHist(apiHist); // Replace mock data with real data
+//         }
+//     }, [status, apiHist]);
+
+//     if (status === 'loading') {
+//         return <Text>Loading...</Text>;
+//     }
+
+//     if (status === 'failed') {
+//         return <Text>Error: {error}</Text>;
+//     }
+
+//     return (
+//         <ImageBackground
+//             source={images.LoginBackGround}
+//             style={RewardStyles.BackGroundImage}
+//             resizeMode="cover"
+//         >
+//             <FlatList
+//                 data={hist}
+//                 keyExtractor={(item, index) => index.toString()}
+//                 contentContainerStyle={styles.listContainer}
+//                 renderItem={({ item }) => (
+//                     <View style={styles.listTile}>
+//                         <Image source={{ uri: item.image }} style={styles.image} />
+//                         <View style={styles.textContainer}>
+//                             <Text style={styles.title}>{item.g_name}</Text>
+//                             <Text style={styles.subtitle}>{item.message}</Text>
+//                         </View>
+//                     </View>
+//                 )}
+//             />
+//         </ImageBackground>
+//     );
+// };
+
+// const styles = StyleSheet.create({
+//     listContainer: {
+//         padding: 16,
+//     },
+//     listTile: {
+//         flexDirection: 'row',
+//         backgroundColor: '#fff',
+//         borderRadius: 8,
+//         marginBottom: 12,
+//         padding: 10,
+//         alignItems: 'center',
+//         elevation: 3,
+//     },
+//     image: {
+//         width: 50,
+//         height: 50,
+//         borderRadius: 8,
+//         marginRight: 12,
+//     },
+//     textContainer: {
+//         flex: 1,
+//     },
+//     title: {
+//         fontSize: 16,
+//         fontWeight: 'bold',
+//         color: '#333',
+//     },
+//     subtitle: {
+//         fontSize: 14,
+//         color: '#666',
+//     },
+// });
+
+// export default ActivityScreen;

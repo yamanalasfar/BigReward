@@ -2,22 +2,23 @@ import axios from "axios";
 import Endpoints from "../Const/Api's_Endpoints";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const GetActivity = async () => {
+const GetHistory = async () => {
     const token = await AsyncStorage.getItem('token');
     try {
         const response = await axios.post(
             Endpoints.ActivityPage,
+            {},
             {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Use "Bearer" if required by API
+                    Authorization: `${token}`, // Use "Bearer" if required by API
                 },
             }
         );
-        console.log("API Response:", response.data); // Log only the data part of the response
-        return response.data; // Return the actual data
+        console.log("API Response (Hist):", response.data.hist); // Log only the 'hist' part
+        return response.data.hist; // Return only the 'hist' data
     } catch (error) {
         console.error("API Error:", error.response?.data || error.message); // Log error details
-        throw error; // Throw the error so it can be caught by createAsyncThunk
+        throw error; // Rethrow for handling in the slice
     }
 };
-export default GetActivity;
+export default GetHistory;

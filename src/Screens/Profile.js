@@ -1,71 +1,132 @@
-import React ,{useState , useEffect} from 'react';
-import { Text, View, ImageBackground, TouchableOpacity ,Image } from 'react-native';
-import images from '../Const/Images';
-import RewardStyles from '../Styles/RewardStyles';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from '@expo/vector-icons';
 import ProfileStyles from '../Styles/ProfileStyles';
-import { Ionicons } from "@expo/vector-icons";
 import CustomTextInput from '../Component/CustomTextInput';
-import CustomButton from '../Component/CustomButton';
 import colors from '../Const/Colors';
+import { fetchProfile } from '../Redux/Slices/ProfileSlice';
+import CustomButton from '../Component/CustomButton';
+import UpdateName from '../Api\'s/Profile/UpdateName';
+import UpdateAvatar from '../Api\'s/Profile/UpdateAvatar';
+import DeleteProfile from '../Api\'s/Profile/DeleteProfile';
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = () => {
+    const dispatch = useDispatch();
+    const { data: profile, status } = useSelector((state) => state.profile);
 
-    const [newAvatar, setNewAvatar] = useState(null);
+    const [apiAvatar, setApiAvatar] = useState(null); // Avatar from API
+    const [pickedAvatar, setPickedAvatar] = useState(null); // New picked image
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
 
+    // Fetch profile data on component mount
+    useEffect(() => {
+        dispatch(fetchProfile());
+    }, [dispatch]);
+
+    // Populate fields when the profile data is fetched
+    useEffect(() => {
+        if (status === 'succeeded' && profile) {
+            setName(profile.name);
+            setEmail(profile.email);
+            setApiAvatar(profile.avatar || null); // Use API avatar or set null if not provided
+        }
+    }, [profile, status]);
+
+    // Avatar picker logic
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
         });
         if (!result.canceled) {
-            console.log(result.assets[0].uri);
-          setNewAvatar(result.assets[0].uri);
+            setPickedAvatar(result.assets[0].uri);
         }
-      };
+    };
+
+    const handleUpdateName = async () => { 
+        UpdateName(name);
+    };
+
+    const handleDeleteProfile = async () => { 
+        DeleteProfile();
+    };
+
+    const handleSaveAvatar = async () => {
+        if (pickedAvatar) {
+            try {
+                const response = await UpdateAvatar(pickedAvatar);
+                console.log("Avatar updated successfully:", response);
+    
+                // Optionally update the UI after successful update
+                setApiAvatar(pickedAvatar); // Update the state to reflect the new avatar
+                setPickedAvatar(null); // Clear pickedAvatar after saving
+            } catch (error) {
+                console.error("Failed to update avatar:", error);
+            }
+        }
+    };
+    
 
     return (
-        <View
-        style={ProfileStyles.BackGround}
-        >
+        <View style={ProfileStyles.BackGround}>
             <ScrollView>
-                <View style = {ProfileStyles.ScreenContainer}>
-                    {newAvatar ? (    
-                        <TouchableOpacity onPress={pickImage} style = {ProfileStyles.AvatarCircle}>
-                            <Image source={{ uri: newAvatar }} style={ProfileStyles.imageStyle}/>
-                        </TouchableOpacity>) :
-                        <TouchableOpacity onPress={pickImage}>
-                            <Ionicons name='person-circle' size={150} color={colors.Darkblue}/>
-                        </TouchableOpacity>
-                    }
+                <View style={ProfileStyles.ScreenContainer}>
+                    {/* Avatar Logic */}
+                    <TouchableOpacity onPress={pickImage} style={ProfileStyles.AvatarCircle}>
+                        {pickedAvatar ? (
+                            <Image source={{ uri: pickedAvatar }} style={ProfileStyles.imageStyle} />
+                        ) : apiAvatar ? (
+                            <Image source={{ uri: apiAvatar }} style={ProfileStyles.imageStyle} />
+                        ) : (
+                            <Ionicons name='person-circle' size={150} color={colors.Darkblue} />
+                        )}
+                    </TouchableOpacity>
+
+                    {/* Show button if there's a picked image */}
+                    {pickedAvatar && (
+                        <CustomButton
+                            color={colors.Cerulean}
+                            text='Save Avatar'
+                            TextColor={colors.White}
+                            underlayColor={colors.CeruleanUnderlay}
+                            onPress={handleSaveAvatar} // Handle save logic here
+                            style={ProfileStyles.avatarButton}
+                        />
+                    )}
+
+                    {/* Name */}
                     <CustomTextInput
                         value={name}
                         onChangeText={setName}
                         placeholder='Name'
                     />
+
+                    {/* Email (read-only) */}
                     <CustomTextInput
                         value={email}
-                        onChangeText={setEmail}
                         placeholder='Email'
+                        editable={false} // Make email read-only
                     />
+
+                    {/* Buttons */}
                     <CustomButton
                         color={colors.Cerulean}
                         text='Update Profile'
                         TextColor={colors.White}
                         underlayColor={colors.CeruleanUnderlay}
-                        onPress={()=>console.log('Update Profile Pressed')}
+                        onPress={handleUpdateName}
                     />
                     <CustomButton
                         color={colors.Red}
                         text='Delete Profile'
                         TextColor={colors.White}
                         underlayColor={colors.RedUnderlay}
-                        onPress={()=>console.log('Delete Profile Pressed')}
+                        onPress={handleDeleteProfile}
                     />
                 </View>
             </ScrollView>

@@ -6,6 +6,7 @@ const ActivityStyles = StyleSheet.create({
         flex: 1,
         width: '100%', 
         height: '100%',
+        backgroundColor : colors.White
     },
     BackGround: {
         flex: 1,
@@ -38,6 +39,36 @@ const ActivityStyles = StyleSheet.create({
         paddingTop: 40,
         paddingLeft:20,
         zIndex: 10,
+    },
+    listContainer: {
+        padding: 16,
+    },
+    listTile: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        marginBottom: 12,
+        padding: 10,
+        alignItems: 'center',
+        elevation: 3,
+    },
+    image: {
+        width: 50,
+        height: 50,
+        borderRadius: 8,
+        marginRight: 12,
+    },
+    textContainer: {
+        flex: 1,
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    subtitle: {
+        fontSize: 14,
+        color: '#666',
     },
 });
 export default ActivityStyles;

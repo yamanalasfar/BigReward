@@ -1,40 +1,44 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import GetActivity from "../../Api's/Activity";
+import GetHistory from "../../Api's/Activity";
 
-export const fetchActivity = createAsyncThunk(
-    "activity/fetchActivity",
+// Asynchronous thunk to fetch the hist data
+export const fetchHist = createAsyncThunk(
+    "history/fetchHist",
     async (_, { rejectWithValue }) => {
         try {
-            const data = await GetActivity(); // `data` is the parsed response from the API
-            return data;
+            const data = await GetHistory(); // Fetch hist data
+            return data; // Return the data directly
         } catch (error) {
-            return rejectWithValue(error.response?.data || error.message); // Use API error details if available
+            return rejectWithValue(error.response?.data || error.message); // Reject with error
         }
     }
 );
 
-
-const activitySlice = createSlice({
-    name: "activity",
+// Create a slice to handle hist data
+const histSlice = createSlice({
+    name: "history",
     initialState: {
-        activity: [], // Store the activity data here
-        status: "idle", // Track request status
+        hist: [], // Store the list of history objects
+        status: "idle", // Track request status (idle/loading/succeeded/failed)
         error: null, // Track errors
     },
-    reducers: {},
+    reducers: {
+        // You can define additional reducers if needed
+    },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchActivity.pending, (state) => {
+            .addCase(fetchHist.pending, (state) => {
                 state.status = "loading";
             })
-            .addCase(fetchActivity.fulfilled, (state, action) => {
+            .addCase(fetchHist.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                state.activity = action.payload.activity || action.payload; // Adjust based on response
+                state.hist = action.payload; // Store the hist data
             })
-            .addCase(fetchActivity.rejected, (state, action) => {
+            .addCase(fetchHist.rejected, (state, action) => {
                 state.status = "failed";
-                state.error = action.payload;
+                state.error = action.payload; // Store the error message
             });
     },
 });
-export default activitySlice.reducer;
+
+export default histSlice.reducer;
