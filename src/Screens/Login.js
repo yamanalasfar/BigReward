@@ -4,15 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LoginStyles from '../Styles/LoginStyles';
 import CustomTextInput from '../Component/CustomTextInput';
 import colors from '../Const/Colors';
-import images from '../Const/Images';
 import CustomButton from '../Component/CustomButton';
 import TouchableText from '../Component/TouchableText';
 import uuid from 'react-native-uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCountryCode } from '../Redux/Slices/CountryCodeSlice';
 import login from '../Api\'s/Login';
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
 
 
 
@@ -36,88 +33,55 @@ const LoginScreen = ({ navigation }) => {
         login(email, password, countryCode, did, navigation, setLoading);
         console.log(countryCode);  
     };
-
-    const handleGoogleSignin = async () => {
-        try {
-          //setLoading(true);
-          await GoogleLogIn();
-          //setLoading(false);
-        } catch (error) {
-          //setLoading(false);
-          Alert.alert('Error', 'There was an issue logging in with Google.');
-        }
-    };
-
-    const webClientId = '205060029443-ulha13efg3gcc9fqs39sjp23e5lfil9b.apps.googleusercontent.com';
-    const androidClientId = '205060029443-14tufk1h91sbe58n3ckl75epbk31hp62.apps.googleusercontent.com';
-    WebBrowser.maybeCompleteAuthSession();
-    const config = {
-        webClientId,
-        androidClientId
-    }
-    const [request, response, promptAsync] = Google.useAuthRequest(config);
-    const handleToken = () => {
-        if (response?.type === "success") {
-            const { authentication } = response;
-            const token = authentication?.accessToken;
-            console.log("access token",token);
-        }
-    }
-    useEffect(() => {
-        handleToken();
-    },[response])   
-
-    return (
-        <ImageBackground
-            source={images.LoginBackGround}
-            style={LoginStyles.BackGroundImage}
-            resizeMode='cover'
-        >
-            <SafeAreaView style={LoginStyles.BackGround}>
-                <Text style={LoginStyles.AppName}>Big Reward</Text>
-                <CustomTextInput
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType='email-address'
-                    placeholder='Email'
-                />
-                <CustomTextInput
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder='Password'
-                    secureTextEntry={!showPassword}
-                    showToggle={true}
-                    onTogglePress={()=>setShowPassword(!showPassword)}
-                />
-                <CustomButton
-                    TextColor={colors.White}
-                    color={colors.Red}
-                    text='Sign in'
-                    underlayColor={colors.RedUnderlay}
-                    onPress={() => navigation.navigate('Home')}
-                    disabled={loading}
-                />
-                <CustomButton
-                    TextColor={colors.White}
-                    color={colors.Cerulean}
-                    text='Sign in with Google'
-                    underlayColor={colors.CeruleanUnderlay}
-                    icon='google'
-                    iconSize={24}
-                    onPress={()=>promptAsync()}
-                />
-                <TouchableText
-                    color={colors.Red}
-                    text='Forgot Password?'
-                    onPress={() => navigation.navigate('Recovery')}
-                />
-                <TouchableText
-                    color={colors.Darkblue}
-                    text='Create an Account'
-                    onPress={() => navigation.reset({index:0 , routes:[{name:'Signup'}]})}
-                />
-            </SafeAreaView>
-        </ImageBackground>
+    return (    
+        <SafeAreaView style={LoginStyles.BackGround}>
+            <Text style={LoginStyles.AppName}>Big Reward</Text>
+            <CustomTextInput
+                value={email}
+                onChangeText={setEmail}
+                keyboardType='email-address'
+                placeholder='Email'
+                cursorColor={colors.White}
+                placeholderTextColor={colors.White}
+            />
+            <CustomTextInput  
+                value={password}
+                onChangeText={setPassword}
+                placeholder='Password'
+                cursorColor={colors.White}
+                placeholderTextColor={colors.White}
+                secureTextEntry={!showPassword}
+                showToggle={true}
+                onTogglePress={() => setShowPassword(!showPassword)}    
+            />
+            <CustomButton
+                TextColor={colors.White}    
+                color={colors.Orange}
+                text='Sign in'
+                underlayColor={colors.LightOrange}
+                onPress={handleSignin}
+                disabled={loading}
+            />
+            <CustomButton
+                TextColor={colors.White}
+                color={colors.Cerulean}
+                text='Sign in with Google'
+                underlayColor={colors.CeruleanUnderlay}
+                icon='google'
+                iconSize={24}
+                onPress={() => promptAsync()}
+            />
+            <TouchableText
+                color={colors.Orange}
+                text='Forgot Password?'
+                onPress={() => navigation.navigate('Recovery')}
+            />
+            <TouchableText  
+                color={colors.Cerulean}
+                text='Create an Account'
+                onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Signup' }] })}
+            />
+        </SafeAreaView>
     );
 };
 export default LoginScreen;

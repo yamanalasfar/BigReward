@@ -2,28 +2,19 @@ import { StyleSheet } from "react-native";
 import  colors  from "../Const/Colors";
 
 const LoginStyles = StyleSheet.create({
-    BackGroundImage: {
-        flex: 1,
-    },
     BackGround: {
         flex: 1,
         justifyContent: 'center',
-        alignItems : 'center',
+        alignItems: 'center',
+        backgroundColor: colors.MainDark,
     },
     AppName: {
         fontSize: 36,
         fontFamily: "Roboto",
-        fontWeight:"bold",
+        fontWeight: "bold",
         textAlign: 'center',
-        color: colors.Darkblue,
-        marginBottom : 20
-    },
-    Login: {
-        fontSize: 28,
-        fontFamily: "Roboto",
-        textAlign: 'center',
-        color: colors.Darkblue,
-        marginBottom : 32
+        color: colors.White,
+        marginBottom: 20
     },
     header: {
         flexDirection: 'row',

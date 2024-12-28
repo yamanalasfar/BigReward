@@ -16,13 +16,14 @@ export const login = async (email, password, cc, did, navigation, setLoading) =>
       cc,
       did,
     });
-
+    const parsedResponse = JSON.parse(response.data.data);
     if (parsedResponse.status == 1) {
       await AsyncStorage.setItem('token', parsedResponse.message);
-      
       Alert.alert('Signin Successful', 'Welcome to Big Reward!');
+      navigation.replace('Home');
       return response.data;
     } else {
+      console.log(response);
       Alert.alert('Signin Failed', parsedResponse.message);
     }
   } catch (error) {

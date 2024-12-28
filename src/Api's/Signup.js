@@ -3,7 +3,7 @@ import Endpoints from '../Const/Api\'s_Endpoints';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 
-export const signup = async (name, email, password, cc, did,setLoading) => {
+export const signup = async (name, email, password, cc, navigation, did, setLoading) => {
   if (!name || !email || !password) {
     Alert.alert('Validation Error', 'Please fill all fields');
     return;
@@ -18,17 +18,16 @@ export const signup = async (name, email, password, cc, did,setLoading) => {
             did,
             rb : 'none'
         });
-      console.log(response.data);
-      const parsedResponse = JSON.parse(response.data.data);
-      console.log(parsedResponse.message);
+    const parsedResponse = JSON.parse(response.data.data);
+    await AsyncStorage.setItem('token', parsedResponse.message);
+    if (parsedResponse.status == 1) {
       await AsyncStorage.setItem('token', parsedResponse.message);
-      if (parsedResponse.status == 1) {
-        await AsyncStorage.setItem('token', parsedResponse.message);
-        Alert.alert('Signup Successful', 'Welcome to Big Reward!');
-        return response.data;
-      } else {
-        Alert.alert('Signup Failed', parsedResponse.message);
-      }  
+      Alert.alert('Signup Successful', 'Welcome to Big Reward!');
+      navigation.replace('Home');
+      return response.data;
+    } else {
+      Alert.alert('Signup Failed', parsedResponse.message);   
+    }
   }
   catch (error)
   {

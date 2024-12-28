@@ -1,63 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ImageBackground, FlatList, ActivityIndicator, StyleSheet, Image } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator, StyleSheet, Image,Linking ,Alert} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchOffers } from '../Redux/Slices/OffersSlice';
 import HomeStyles from '../Styles/HomeStyles';
-import images from '../Const/Images';
 import CustomButton from '../Component/CustomButton';
 import colors from '../Const/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeModules } from 'react-native';
-
 const { TapjoyModule2, FyberModule } = NativeModules;
 
-const OfferItem = ({ offer, apiToken }) => {
+const OfferItem =async ({ offer, apiToken }) => {
+
     const startMyKotlinActivity = (userid, appkey, appplacement) => {
         TapjoyModule2.startTapjoyActivity(userid, appkey, appplacement);
     };
-
+      
     const startFyberActivity = (userid, appkey, appid) => {
-        FyberModule.startFyberActivity(userid, appkey, appid);
+          FyberModule.startFyberActivity(userid, appkey, appid);
     };
+    const token = await AsyncStorage.getItem('token');
+    
 
     const handlePlayPress = () => {
         try {
-            if (offer.type === 'web') {
-                // Logic for Web Offers
-                const offerUrl = offer.data.replace('[app_uid]@@@-', apiToken);
-                console.log('Opening Web Offer URL:', offerUrl);
-                Linking.openURL(offerUrl).catch((err) =>
-                    console.error('Failed to open Web Offer URL:', err)
-                );
-            } else if (offer.type === 'sdk') {
-                // Logic for SDK Offers
-                const parsedData = JSON.parse(offer.data);
-                const appKey = parsedData.find(item => item.slug === 'app_key')?.value || '';
-                const placement = parsedData.find(item => item.slug === 'pleacement')?.value || '';
-
-                if (!appKey || !placement) {
-                    console.error('Invalid SDK offer data structure');
-                    return;
-                }
-
-                console.log(`${appKey} ### ${placement} ### ${apiToken}`);
-
-                switch (offer.title) {
-                    case 'Tapjoy':
-                        startMyKotlinActivity(apiToken, appKey, placement);
-                        break;
-
-                    case 'Fyber':
-                        startFyberActivity(apiToken, placement, appKey);
-                        break;
-
-                    default:
-                        console.log(`No specific logic for SDK offer: ${offer.title}`);
-                        break;
-                }
-            } else {
-                console.error('Unknown offer type:', offer.type);
-            }
+            const parsedData = JSON.parse(offer.data);
+            const appId = parsedData[0].value;
+            const securityToken = parsedData[1].value;
+            // console.log('Opening Web Offer URL:', offer);
+            // if (offer.data.startsWith('http')) {
+            //     // Handle web offer
+            //     Linking.openURL(offer.data);
+            // } else {
+            //     // Handle SDK offer 
+            //     const parsedData = JSON.parse(offer.data);
+            //     const appId = parsedData[0].value;
+            //     const securityToken = parsedData[1].value;
+            //     Alert.alert('SDK Offer Data', `App ID: ${appId}\nSecurity Token: ${securityToken}`);
+            //     if (offer.title == 'Tapjoy') {
+            //         startMyKotlinActivity(token, appId, securityToken);
+            //     } else if (offer.title == 'Fyber') { 
+            //         startFyberActivity(token, securityToken, appId);
+            //     }
+            // }
+            startFyberActivity(token, securityToken, appId);
         } catch (error) {
             console.error('Failed to handle play press:', error);
         }
@@ -83,6 +68,7 @@ const OfferItem = ({ offer, apiToken }) => {
 
 const HomeScreen = ({ navigation }) => {
     const [apiToken, setApiToken] = useState('');
+    const [refreshing, setRefreshing] = useState(false);
     const dispatch = useDispatch();
     const { sdkOffers, webOffers, cpaOffers, cpvOffers, status, error } = useSelector((state) => state.offers);
     const { countryCode } = useSelector((state) => state.country);
@@ -104,13 +90,28 @@ const HomeScreen = ({ navigation }) => {
         fetchApiToken();
     }, []);
 
+    const fetchData = () => {
+        if (countryCode) {
+            dispatch(fetchOffers(countryCode));
+        }
+    };
+
     useEffect(() => {
         if (status === 'idle' && countryCode) {
-            dispatch(fetchOffers(countryCode));
+            fetchData();
         }
     }, [dispatch, status, countryCode]);
 
-    if (status === 'loading') {
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        try {
+            await fetchData(); // Re-fetch offers
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
+    if (status === 'loading' && !refreshing) {
         return (
             <View style={HomeStyles.centered}>
                 <ActivityIndicator size="large" color="#0000ff" />
@@ -121,7 +122,15 @@ const HomeScreen = ({ navigation }) => {
     if (status === 'failed') {
         return (
             <View style={HomeStyles.centered}>
-                <Text>Error loading offers: {error}</Text>
+                <Text style={GiftsStyles.errorText}>
+                    Unable to load offers. Please try again later.
+                </Text>
+                <TouchableOpacity
+                    onPress={() => dispatch(fetchData())}
+                    style={GiftsStyles.retryButton}
+                >
+                    <Text style={GiftsStyles.retryButtonText}>Retry</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -153,6 +162,8 @@ const HomeScreen = ({ navigation }) => {
                 renderItem={renderCategory}
                 keyExtractor={(item, index) => `category-${index}`}
                 contentContainerStyle={HomeStyles.scrollContent}
+                onRefresh={handleRefresh} // Pull-to-refresh handler
+                refreshing={refreshing} // Controls refresh spinner
             />
         </View>
     );

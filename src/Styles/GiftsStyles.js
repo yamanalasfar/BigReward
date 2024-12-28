@@ -6,20 +6,27 @@ const GiftsStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    BackGroundImage: {
-        flex: 1,
+    errorText: {
+        color: 'red',
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 10,
     },
-    balanceContainer: {
+    retryButton: {
         padding: 10,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        borderRadius: 8,
-        margin: 10,
-        alignItems: 'flex-start',
+        backgroundColor: '#007BFF',
+        borderRadius: 5,
     },
-    balanceText: {
-        fontSize: 18,
+    retryButtonText: {
+        color: 'white',
+        fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: 8,
+    },
+    emptyStateText: {
+        textAlign: 'center',
+        fontSize: 16,
+        color: 'gray',
+        marginTop: 20,
     },
     listContainer: {
         paddingHorizontal: 10,
@@ -28,26 +35,31 @@ const GiftsStyles = StyleSheet.create({
     categoryContainer: {
         flex: 1,
         margin: 10,
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 10,
         alignItems: 'center',
-        overflow: 'hidden',
-        justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOpacity: 0.2,
-        shadowRadius: 5,
-        elevation: 3,
     },
     categoryImage: {
-        width: '100%',
-        height: 80,
+        width: 100,
+        height: 100,
         marginBottom: 10,
     },
     categoryName: {
-        fontSize: 16,
-        fontWeight: 'bold',
         textAlign: 'center',
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
+    balanceContainer: {
+        padding: 20,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        alignItems: 'center',
+    },
+    balanceText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    BackGroundImage: {
+        flex: 1,
+        resizeMode: 'cover',
     },
 });
 

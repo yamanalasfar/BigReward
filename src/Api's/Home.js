@@ -11,7 +11,7 @@ const GetOffers = async (countryCode) => {
     );
     const data = JSON.parse(response.data.data);
     console.log(token);
-    console.log(data.offers.offerwall_sdk);
+    console.log(data.offers.offerwall_web);
     return {
         sdkOffers: data.offers.offerwall_sdk,
         webOffers: data.offers.offerwall_web,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,10 +11,11 @@ import CustomButton from '../Component/CustomButton';
 import UpdateName from '../Api\'s/Profile/UpdateName';
 import UpdateAvatar from '../Api\'s/Profile/UpdateAvatar';
 import DeleteProfile from '../Api\'s/Profile/DeleteProfile';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const { data: profile, status } = useSelector((state) => state.profile);
+    const { data: profile, status, error } = useSelector((state) => state.profile);
 
     const [apiAvatar, setApiAvatar] = useState(null); // Avatar from API
     const [pickedAvatar, setPickedAvatar] = useState(null); // New picked image
@@ -48,12 +49,32 @@ const ProfileScreen = () => {
         }
     };
 
-    const handleUpdateName = async () => { 
-        UpdateName(name);
+    const handleUpdateName = async () => {
+        if (!name.trim()) {
+            alert('Please enter a valid name.');
+            return;
+        }
+        try {
+            await UpdateName(name);
+        } catch (error) {
+            console.error('Failed to update name:', error);
+        }
     };
 
-    const handleDeleteProfile = async () => { 
-        DeleteProfile();
+    const handleDeleteProfile = async () => {
+        try {
+            await DeleteProfile();
+        } catch (error) {
+            console.error('Failed to delete profile:', error);
+        }
+    };
+    const handleLogout = async () => {
+        try {
+            await AsyncStorage.removeItem('token');
+            navigation.replace('Login');
+        } catch (error) {
+            console.error('Failed to delete profile:', error);
+        }
     };
 
     const handleSaveAvatar = async () => {
@@ -68,9 +89,26 @@ const ProfileScreen = () => {
             } catch (error) {
                 console.error("Failed to update avatar:", error);
             }
+        } else {
+            alert('Please select an avatar first.');
         }
     };
-    
+
+    if (status === 'loading') {
+        return (
+            <View style={ProfileStyles.centered}>
+                <ActivityIndicator size="large" color={colors.Cerulean} />
+            </View>
+        );
+    }
+
+    if (status === 'failed') {
+        return (
+            <View style={ProfileStyles.centered}>
+                <Text style={ProfileStyles.errorText}>Error: {error}</Text>
+            </View>
+        );
+    }
 
     return (
         <View style={ProfileStyles.BackGround}>
@@ -128,9 +166,18 @@ const ProfileScreen = () => {
                         underlayColor={colors.RedUnderlay}
                         onPress={handleDeleteProfile}
                     />
+                    <CustomButton
+                        color={colors.Red}
+                        text='Logout'
+                        TextColor={colors.White}
+                        underlayColor={colors.RedUnderlay}
+                        onPress={handleLogout}
+                        icon='sign-out'
+                    />
                 </View>
             </ScrollView>
         </View>
     );
 };
+
 export default ProfileScreen;

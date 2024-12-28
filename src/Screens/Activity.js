@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Text, View, FlatList, Image, StyleSheet, ImageBackground } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, FlatList, Image, ActivityIndicator, StyleSheet, ImageBackground } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import images from '../Const/Images';
 import ActivityStyles from '../Styles/ActivityStyles';
@@ -9,16 +9,49 @@ const ActivityScreen = () => {
     const dispatch = useDispatch();
     const { hist, status, error } = useSelector((state) => state.history);
 
-    useEffect(() => {
-        dispatch(fetchHist());
-    }, [dispatch]);
+    // State for pull-to-refresh
+    const [refreshing, setRefreshing] = useState(false);
 
-    if (status === 'loading') {
-        return <Text>Loading...</Text>;
+    useEffect(() => {
+        if (status === 'idle') {
+            dispatch(fetchHist());
+        }
+    }, [dispatch, status]);
+
+    // Pull-to-refresh handler
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        try {
+            await dispatch(fetchHist()).unwrap();
+        } catch (err) {
+            console.error('Failed to refresh history:', err);
+        } finally {
+            setRefreshing(false);
+        }
+    };
+
+    // Display loading spinner while data is being fetched
+    if (status === 'loading' && !refreshing) {
+        return (
+            <View style={ActivityStyles.centered}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
     }
 
+    // Display error message with retry button
     if (status === 'failed') {
-        return <Text>Error: {error}</Text>;
+        return (
+            <View style={ActivityStyles.centered}>
+                <Text style={ActivityStyles.errorText}>Error loading activity.</Text>
+                <Text style={ActivityStyles.errorMessage}>{error}</Text>
+                <View style={ActivityStyles.retryButtonContainer}>
+                    <Text onPress={() => dispatch(fetchHist())} style={ActivityStyles.retryButton}>
+                        Retry
+                    </Text>
+                </View>
+            </View>
+        );
     }
 
     return (
@@ -40,10 +73,18 @@ const ActivityScreen = () => {
                         </View>
                     </View>
                 )}
+                onRefresh={handleRefresh} // Pull-to-refresh functionality
+                refreshing={refreshing} // Show refreshing spinner
+                ListEmptyComponent={
+                    <Text style={ActivityStyles.emptyStateText}>No activity available.</Text>
+                } // Empty state fallback
+                initialNumToRender={6} // Optimize initial rendering
+                windowSize={5} // Optimize memory usage
             />
         </ImageBackground>
     );
 };
+
 export default ActivityScreen;
 
 // import React, { useEffect, useState } from 'react';
