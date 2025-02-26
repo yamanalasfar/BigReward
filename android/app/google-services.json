@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "852611106129",
+    "project_id": "cash-blue",
+    "storage_bucket": "cash-blue.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852611106129:android:ed0906c471c03a266ebf70",
+        "android_client_info": {
+          "package_name": "com.bigrewards.jewelcash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852611106129-n78ab8cije3lq9g0nopi0kc05lnf715g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bigrewards.jewelcash",
+            "certificate_hash": "618bc582486c223f181f970149bdd564cfb105a2"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc-ook7NdnyT2fs_wpCOD2om6w_n_4HH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852611106129-ggvg4ts6o0e47jkph0envsok7qgvlpcj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852611106129-t0iucgpen433o2h91hshkp3o0tg81tfi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.joygamerewards.sortemanga.testApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
