@@ -1,5 +1,5 @@
 class Endpoints {
-  static const String host = 'https://joycash.click/api';
+  static const String host = 'https://bigrewards.pro/api';
   static const String register = '$host/register';
   static const String login = '$host/login';
   static const String glogin = '$host/glogin';
