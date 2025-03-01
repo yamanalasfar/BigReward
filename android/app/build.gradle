@@ -33,10 +33,10 @@ android {
 
     signingConfigs{
         release {
-            keyAlias 'upload'
-            storeFile file('upload-keystore.jks')
-            keyPassword '123456'
-            storePassword '123456'
+            keyAlias 'b3dddc9e3cfdf055c5344e1040162bf0'
+            storeFile file('@jasem41__onlineGame-keystore.bak.jks')
+            keyPassword '703251fcbd1a560a2b7a5af05df2802a'
+            storePassword '5e0cf5cad15399b0b1bf1522b3aa27d8'
         }
     }
 
