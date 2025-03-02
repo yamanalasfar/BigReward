@@ -16,6 +16,8 @@ class RegisterController extends GetxController {
   RxBool obscureText = true.obs;
   RxBool loader = false.obs;
   String did = '';
+  RxBool balanceloader = false.obs;
+  RxInt balance = 0.obs;
 
   Future<void> encryptDeviceId() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -94,8 +96,11 @@ class RegisterController extends GetxController {
             colorText: AppColors.White,
           );
           Get.offNamed('/home');
+          Future.delayed(Duration(seconds: 2), () {
+            showBonusDialog();
+          });
         }
-        if (decodedResponse['status'] == -2) {
+        if (decodedResponse['status'] == 0) {
           //GetStorage().write('token', decodedResponse['message']);
           Get.snackbar(
             'Done',
@@ -119,5 +124,98 @@ class RegisterController extends GetxController {
     } finally {
       loader(false);
     }
+  }
+
+  getBalance() async {
+    Dio dio = Dio();
+    try {
+      balanceloader(true);
+      var response = await dio.post(
+        Endpoints.balance,
+        options: Options(
+          headers: {
+            'Authorization': GetStorage().read('token'),
+          },
+        ),
+      );
+      if (response.data['status'] == 1) {
+        balance.value = response.data['b'];
+        print(
+            "Balance ================================================== ${balance.value}");
+      } else {
+        Get.snackbar(
+          'Error',
+          response.data['message'],
+          backgroundColor: Colors.red,
+          colorText: AppColors.White,
+        );
+      }
+    } catch (e) {
+      balanceloader(false);
+      print(e);
+    } finally {
+      balanceloader(false);
+    }
+  }
+
+  void showBonusDialog() {
+    showDialog(
+      context: Get.context!,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment.center,
+              radius: 1.2,
+              colors: [
+                AppColors.Grape,
+                AppColors.Eerieblack,
+              ],
+              stops: [0.3, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.card_giftcard, size: 60, color: Colors.white),
+              const SizedBox(height: 10),
+              Text(
+                "Congratulations!",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "You've received a special bonus!\nEnjoy your reward.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.white70),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                      getBalance();
+                    },
+                    child: const Text(
+                      'OK',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -26,12 +26,17 @@ class _HomepageState extends State<Homepage> {
         elevation: 0,
         actions: [
           Obx(
-            () => Text(
-              "${controller.balance.value} 💰",
-              style: TextStyle(
-                color: AppColors.White,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
+            () => InkWell(
+              onTap: () {
+                controller.getBalance();
+              },
+              child: Text(
+                "${controller.balance.value} 💰",
+                style: TextStyle(
+                  color: AppColors.White,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),

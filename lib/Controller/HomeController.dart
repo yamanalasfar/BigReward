@@ -105,7 +105,9 @@ class HomeController extends GetxController {
         ),
       );
       if (response.data['status'] == 1) {
-        balance.value = int.parse(response.data['b']);
+        balance.value = response.data['b'];
+        print(
+            "Balance ================================================== ${balance.value}");
         fetchAdjustEvents();
       } else {
         Get.snackbar(
@@ -160,6 +162,31 @@ class HomeController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void showBonusDialog() {
+    Get.defaultDialog(
+      title: "Congratulations!",
+      titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      content: Column(
+        children: [
+          Icon(Icons.card_giftcard, size: 60, color: Colors.green),
+          SizedBox(height: 10),
+          Text(
+            "You've received a special bonus!\nEnjoy your reward.",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
+      textConfirm: "OK",
+      confirmTextColor: Colors.white,
+      buttonColor: Colors.green,
+      onConfirm: () {
+        Get.back();
+        getBalance(); // Call function to update balance after closing dialog
+      },
+    );
   }
 
   @override
