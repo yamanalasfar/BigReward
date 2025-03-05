@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:adjust_sdk/adjust_config.dart';
 import 'package:bigreward/Const/Api.dart';
 import 'package:bigreward/Const/Colors.dart';
@@ -17,10 +18,11 @@ class HomeController extends GetxController {
   RxInt balance = 0.obs;
   TextEditingController email = TextEditingController();
   TextEditingController referral = TextEditingController(
-      text: 'https://cashgames.website/?ref=${GetStorage().read('userid')}');
+      text: 'https://bigrewards.pro/j/${GetStorage().read('userid')}');
   var events = <Map<String, String>>[].obs;
   var isLoading = false.obs;
   var adjustKey = ''.obs;
+  Timer? _balanceTimer;
 
   void changeTabIndex(int index) {
     selectedIndex.value = index;
@@ -164,29 +166,10 @@ class HomeController extends GetxController {
     }
   }
 
-  void showBonusDialog() {
-    Get.defaultDialog(
-      title: "Congratulations!",
-      titleStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      content: Column(
-        children: [
-          Icon(Icons.card_giftcard, size: 60, color: Colors.green),
-          SizedBox(height: 10),
-          Text(
-            "You've received a special bonus!\nEnjoy your reward.",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
-      textConfirm: "OK",
-      confirmTextColor: Colors.white,
-      buttonColor: Colors.green,
-      onConfirm: () {
-        Get.back();
-        getBalance(); // Call function to update balance after closing dialog
-      },
-    );
+  void _startBalanceTimer() {
+    _balanceTimer = Timer.periodic(Duration(seconds: 10), (timer) {
+      getBalance();
+    });
   }
 
   @override
@@ -195,5 +178,6 @@ class HomeController extends GetxController {
     super.onInit();
     getProfile();
     getBalance();
+    _startBalanceTimer();
   }
 }

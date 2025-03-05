@@ -98,7 +98,7 @@ class Activities extends StatelessWidget {
                                               ['type'] ==
                                           'activity'
                                       ? Text(
-                                          controller.activity[index]['points'],
+                                          "${controller.activity[index]['points']}",
                                           style: TextStyle(
                                             color: AppColors.White,
                                             fontWeight: FontWeight.bold,
@@ -110,8 +110,7 @@ class Activities extends StatelessWidget {
                               ),
                               if (controller.activity[index]['type'] ==
                                   'redeem')
-                                controller.activity[index]['is_completed'] ==
-                                        '0'
+                                controller.activity[index]['is_completed'] == 0
                                     ? Text(
                                         'Pending',
                                         style:

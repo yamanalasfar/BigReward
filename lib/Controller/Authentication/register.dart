@@ -88,7 +88,9 @@ class RegisterController extends GetxController {
       print(response.statusCode);
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (decodedResponse['status'] == 1) {
+          print(decodedResponse['u']);
           GetStorage().write('token', decodedResponse['message']);
+          GetStorage().write('userid', decodedResponse['u']);
           Get.snackbar(
             'Done',
             'Registration successful!',
