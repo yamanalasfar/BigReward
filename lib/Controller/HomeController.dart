@@ -172,6 +172,36 @@ class HomeController extends GetxController {
     });
   }
 
+  Future<void> checkNotificationPermission() async {
+    NotificationSettings settings =
+        await FirebaseMessaging.instance.getNotificationSettings();
+
+    if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+      // Show permission request dialog
+      Get.defaultDialog(
+        title: 'Notification Permission',
+        middleText: 'We need your permission to send you important updates.',
+        textConfirm: 'Allow',
+        textCancel: 'Deny',
+        confirmTextColor: Colors.white,
+        onConfirm: () async {
+          await FirebaseMessaging.instance.requestPermission();
+          Get.back(); // Close the dialog
+        },
+        onCancel: () {
+          Get.back(); // Close the dialog
+        },
+      );
+    } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
+      Get.snackbar(
+        'Permission Denied',
+        'You have denied notifications. Enable them in app settings for better experience.',
+        backgroundColor: Colors.red,
+        colorText: AppColors.White,
+      );
+    }
+  }
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -179,5 +209,6 @@ class HomeController extends GetxController {
     getProfile();
     getBalance();
     _startBalanceTimer();
+    checkNotificationPermission();
   }
 }

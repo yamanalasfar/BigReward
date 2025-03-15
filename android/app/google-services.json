@@ -44,6 +44,196 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852611106129:android:22d30b2be7ff1d156ebf70",
+        "android_client_info": {
+          "package_name": "com.bluecash.rewardsgaga"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc-ook7NdnyT2fs_wpCOD2om6w_n_4HH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852611106129-ggvg4ts6o0e47jkph0envsok7qgvlpcj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852611106129-t0iucgpen433o2h91hshkp3o0tg81tfi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.joygamerewards.sortemanga.testApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852611106129:android:e98598e361f9b5756ebf70",
+        "android_client_info": {
+          "package_name": "com.gamecitybolder.earnsertkold"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc-ook7NdnyT2fs_wpCOD2om6w_n_4HH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852611106129-ggvg4ts6o0e47jkph0envsok7qgvlpcj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852611106129-t0iucgpen433o2h91hshkp3o0tg81tfi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.joygamerewards.sortemanga.testApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852611106129:android:bc18a706cbc51bb96ebf70",
+        "android_client_info": {
+          "package_name": "com.gocashearn.freerewardstols"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852611106129-id3ohcochdml72tpu6ssqnrk7otuj91j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gocashearn.freerewardstols",
+            "certificate_hash": "701fd920cef6671bae434b2eeebccdd9748fbc36"
+          }
+        },
+        {
+          "client_id": "852611106129-us4ifodvul8jeg6nfdpn04td9ep679sm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gocashearn.freerewardstols",
+            "certificate_hash": "6c7b3e5f47f1d60dfb17ce11006f45050429d112"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc-ook7NdnyT2fs_wpCOD2om6w_n_4HH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852611106129-ggvg4ts6o0e47jkph0envsok7qgvlpcj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852611106129-t0iucgpen433o2h91hshkp3o0tg81tfi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.joygamerewards.sortemanga.testApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852611106129:android:f6620d446a555f986ebf70",
+        "android_client_info": {
+          "package_name": "com.joygamerewards.sortemanga"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852611106129-orls9a54lb59hf1t35rq76ddoj1h8gb4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.joygamerewards.sortemanga",
+            "certificate_hash": "5bf9b25a6deea387d9bb7bc46663c9ae4f4d77cd"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc-ook7NdnyT2fs_wpCOD2om6w_n_4HH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852611106129-ggvg4ts6o0e47jkph0envsok7qgvlpcj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852611106129-t0iucgpen433o2h91hshkp3o0tg81tfi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.joygamerewards.sortemanga.testApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852611106129:android:44f2e1bab158242e6ebf70",
+        "android_client_info": {
+          "package_name": "com.marsmagodalu.earnsertkold"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852611106129-rogt9gh9ai2l6vvma9jmtknt597fbmdj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marsmagodalu.earnsertkold",
+            "certificate_hash": "5bf9b25a6deea387d9bb7bc46663c9ae4f4d77cd"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc-ook7NdnyT2fs_wpCOD2om6w_n_4HH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852611106129-ggvg4ts6o0e47jkph0envsok7qgvlpcj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852611106129-t0iucgpen433o2h91hshkp3o0tg81tfi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.joygamerewards.sortemanga.testApp"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

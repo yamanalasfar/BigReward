@@ -3,6 +3,7 @@ import 'package:bigreward/Const/Api.dart';
 import 'package:bigreward/Const/Colors.dart';
 import 'package:bigreward/Const/decoder.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -91,6 +92,8 @@ class RegisterController extends GetxController {
           print(decodedResponse['u']);
           GetStorage().write('token', decodedResponse['message']);
           GetStorage().write('userid', decodedResponse['u']);
+          await FirebaseMessaging.instance.subscribeToTopic('misc');
+          postfid();
           Get.snackbar(
             'Done',
             'Registration successful!',
@@ -125,6 +128,32 @@ class RegisterController extends GetxController {
       print(e);
     } finally {
       loader(false);
+    }
+  }
+
+  postfid() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    var headers = {
+      'Authorization': '${GetStorage().read('token')}',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+    var data = json
+        .encode({"f": "$fcmToken", "userid": "${GetStorage().read('userid')}"});
+    var dio = Dio();
+    var response = await dio.request(
+      Endpoints.fid,
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+    } else {
+      print(response.statusMessage);
     }
   }
 

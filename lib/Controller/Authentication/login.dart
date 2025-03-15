@@ -14,12 +14,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginController extends GetxController {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  TextEditingController email = TextEditingController();
+  TextEditingController email =
+      TextEditingController(text: 'husam12345ahmed@gmail.com');
   TextEditingController reset = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController password = TextEditingController(text: 'hossin1998');
   RxBool obscureText = true.obs;
   RxBool loader = false.obs;
   RxBool googleloader = false.obs;
+  String did = '';
   GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: ['email'],
   );
@@ -79,15 +81,57 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> login() async {
+  Future<void> encryptDeviceId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+    String deviceId = androidInfo.id;
+    String key = "yamanalasfar"; // Manually typed key
+
+    print(deviceId);
+    // Encrypt
+    String encryptedId = xorEncrypt(deviceId, key);
+    print("Encrypted ID: $encryptedId");
+    did = encryptedId;
+
+    // Decrypt
+    String decryptedId = xorDecrypt(encryptedId, key);
+    print("Decrypted ID: $decryptedId");
+  }
+
+  String xorEncrypt(String input, String key) {
+    List<int> inputBytes = utf8.encode(input);
+    List<int> keyBytes = utf8.encode(key);
+    List<int> encryptedBytes = [];
+
+    for (int i = 0; i < inputBytes.length; i++) {
+      encryptedBytes.add(inputBytes[i] ^ keyBytes[i % keyBytes.length]);
+    }
+
+    return base64Url.encode(encryptedBytes); // Use base64Url for safe encoding
+  }
+
+  String xorDecrypt(String input, String key) {
+    List<int> encryptedBytes = base64Url.decode(input); // Decode base64
+    List<int> keyBytes = utf8.encode(key);
+    List<int> decryptedBytes = [];
+
+    for (int i = 0; i < encryptedBytes.length; i++) {
+      decryptedBytes.add(encryptedBytes[i] ^ keyBytes[i % keyBytes.length]);
+    }
+
+    return utf8.decode(decryptedBytes); // Decode to original string
+  }
+
+  Future<void> login() async {
+    await encryptDeviceId();
     Dio dio = Dio();
     try {
       loader(true);
       var response = await dio.post(
         Endpoints.login,
         data: {
-          'did': androidInfo.id,
+          'did': did,
           'email': email.text,
           'password': password.text,
         },
